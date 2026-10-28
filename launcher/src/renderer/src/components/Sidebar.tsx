@@ -22,7 +22,7 @@ export default function Sidebar({ current, onSelect }: SidebarProps) {
 
   return (
     // Mouse clicks do not move the focus, so no focus ring remains after a click; Tab still works.
-    <nav className="sidebar" aria-label="Hauptnavigation" onMouseDown={(event) => event.preventDefault()}>
+    <nav className="sidebar" aria-label="Main navigation" onMouseDown={(event) => event.preventDefault()}>
       <ul className="sidebar__list">{pages.filter((page) => page.group === 'top').map(renderEntry)}</ul>
       <ul className="sidebar__list">{pages.filter((page) => page.group === 'bottom').map(renderEntry)}</ul>
     </nav>

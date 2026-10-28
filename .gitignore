@@ -1,5 +1,5 @@
 # ------------------------------------------------------------
-# Zugangsdaten und Geheimnisse – gehoeren NIE ins Repository
+# Credentials and secrets – NEVER belong in the repository
 # ------------------------------------------------------------
 .env
 .env.*
@@ -13,7 +13,7 @@ secrets/
 **/auth-cache*.json
 
 # ------------------------------------------------------------
-# Lokale Dateien, nicht fuer das Repository
+# Local files, not for the repository
 # ------------------------------------------------------------
 CLAUDE.md
 claude.txt
@@ -44,18 +44,18 @@ runs/
 *.class
 hs_err_pid*
 replay_pid*
-# Gradle-Wrapper-JAR wird dagegen versioniert
+# The Gradle wrapper JAR is versioned, though
 !gradle/wrapper/gradle-wrapper.jar
 
 # ------------------------------------------------------------
-# Minecraft-Dateien (duerfen nicht weiterverbreitet werden)
+# Minecraft files (must not be redistributed)
 # ------------------------------------------------------------
 *.minecraft/
 .minecraft/
 minecraft-*.jar
 
 # ------------------------------------------------------------
-# Entwicklungsumgebungen
+# IDEs
 # ------------------------------------------------------------
 .idea/
 *.iml
@@ -65,7 +65,7 @@ minecraft-*.jar
 !.vscode/extensions.json
 
 # ------------------------------------------------------------
-# Betriebssystem und Sonstiges
+# Operating system and miscellaneous
 # ------------------------------------------------------------
 Thumbs.db
 Desktop.ini

@@ -33,8 +33,8 @@ export default function TitleBar() {
         <button
           type="button"
           className="titlebar__button"
-          title="Minimieren"
-          aria-label="Minimieren"
+          title="Minimize"
+          aria-label="Minimize"
           onClick={() => window.azyron.window.minimize()}
         >
           <MinimizeIcon />
@@ -42,8 +42,8 @@ export default function TitleBar() {
         <button
           type="button"
           className="titlebar__button"
-          title={maximized ? 'Wiederherstellen' : 'Maximieren'}
-          aria-label={maximized ? 'Wiederherstellen' : 'Maximieren'}
+          title={maximized ? 'Restore' : 'Maximize'}
+          aria-label={maximized ? 'Restore' : 'Maximize'}
           onClick={() => window.azyron.window.toggleMaximize()}
         >
           {maximized ? <RestoreIcon /> : <MaximizeIcon />}
@@ -51,8 +51,8 @@ export default function TitleBar() {
         <button
           type="button"
           className="titlebar__button titlebar__button--close"
-          title="Schliessen"
-          aria-label="Schliessen"
+          title="Close"
+          aria-label="Close"
           onClick={() => window.azyron.window.close()}
         >
           <CloseIcon />

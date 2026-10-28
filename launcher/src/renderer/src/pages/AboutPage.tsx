@@ -35,11 +35,11 @@ export default function AboutPage({ title }: AboutPageProps) {
       </p>
 
       <dl className="about__facts">
-        <dt>Kontakt</dt>
+        <dt>Contact</dt>
         <dd className="about__selectable">azyronclient@proton.me</dd>
-        <dt>Lizenz</dt>
+        <dt>License</dt>
         <dd>GNU General Public License v3.0 (GPL-3.0)</dd>
-        <dt>Laufzeit</dt>
+        <dt>Runtime</dt>
         <dd>
           Electron {electron} · Chromium {chrome} · Node.js {node}
         </dd>

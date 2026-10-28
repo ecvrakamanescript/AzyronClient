@@ -1,12 +1,12 @@
-# Zeilenenden einheitlich halten (Windows-Rechner, plattformneutrales Repository)
+# Keep line endings consistent (Windows machine, platform-neutral repository)
 * text=auto eol=lf
 
-# Windows-Skripte brauchen CRLF
+# Windows scripts need CRLF
 *.bat text eol=crlf
 *.cmd text eol=crlf
 *.ps1 text eol=crlf
 
-# Binaerdateien nie veraendern
+# Never modify binary files
 *.png binary
 *.jpg binary
 *.ico binary
