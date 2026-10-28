@@ -1,5 +1,6 @@
 import { join } from 'node:path';
 import { app, BrowserWindow, Menu, shell } from 'electron';
+import { forwardMaximizedState, registerIpcHandlers } from './window-controls';
 
 // Not packaged means started from source (npm run dev / npm start).
 const isDev = !app.isPackaged;
@@ -14,6 +15,9 @@ function createMainWindow(): BrowserWindow {
     minHeight: 640,
     title: 'Azyron Client',
     backgroundColor: '#0e0b14',
+    // No Windows title bar: the launcher draws its own (TitleBar.tsx).
+    // Resizing at the edges and Aero Snap keep working.
+    frame: false,
     show: false,
     autoHideMenuBar: true,
     webPreferences: {
@@ -26,6 +30,8 @@ function createMainWindow(): BrowserWindow {
 
   // Show the window once the first frame is ready, so no white flash appears.
   win.once('ready-to-show', () => win.show());
+
+  forwardMaximizedState(win);
 
   // The launcher never opens additional windows; https links open in the default browser.
   win.webContents.setWindowOpenHandler(({ url }) => {
@@ -88,6 +94,7 @@ if (!app.requestSingleInstanceLock()) {
   });
 
   void app.whenReady().then(() => {
+    registerIpcHandlers();
     mainWindow = createMainWindow();
   });
 

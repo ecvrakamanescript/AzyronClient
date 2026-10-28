@@ -1,0 +1,257 @@
+/* Layout and components. Colours only via the variables from theme.css. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: 14px;
+  /* Launcher UI behaves like an app: text is only selectable where it is useful. */
+  user-select: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+}
+
+/* App frame: title bar on top, sidebar and content below. */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.app__body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.app__content {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  background: radial-gradient(ellipse 80% 50% at 50% -10%, var(--color-glow), transparent 70%), var(--color-bg);
+}
+
+/* Title bar (replaces the Windows title bar). */
+
+.titlebar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: stretch;
+  justify-content: space-between;
+  height: var(--titlebar-height);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  /* The whole bar moves the window; buttons are excluded below. */
+  -webkit-app-region: drag;
+}
+
+.titlebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 12px;
+}
+
+.titlebar__logo {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, var(--color-accent-hover), var(--color-accent));
+  color: var(--color-accent-contrast);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.titlebar__name {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.titlebar__controls {
+  display: flex;
+  -webkit-app-region: no-drag;
+}
+
+.titlebar__button {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: default;
+}
+
+.titlebar__button:hover {
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+}
+
+.titlebar__button--close:hover {
+  background: var(--color-danger);
+  color: var(--color-danger-contrast);
+}
+
+/* Sidebar navigation. */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-shrink: 0;
+  width: var(--sidebar-width);
+  padding: 16px 12px;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+}
+
+.sidebar__list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
+}
+
+.sidebar__item:hover {
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+}
+
+.sidebar__item--active,
+.sidebar__item--active:hover {
+  background: var(--color-accent-soft);
+  color: var(--color-text);
+}
+
+/* Accent bar on the left edge of the active entry. */
+.sidebar__item--active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--color-accent);
+}
+
+.sidebar__item--active .sidebar__icon {
+  color: var(--color-accent-hover);
+}
+
+.sidebar__icon {
+  flex-shrink: 0;
+}
+
+/* Pages. */
+
+.page {
+  padding: 32px 40px;
+}
+
+.page__title {
+  margin: 0 0 24px;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+/* About page. */
+
+.about__product {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.about__name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-accent-hover);
+}
+
+.about__version {
+  color: var(--color-text-muted);
+}
+
+.about__disclaimer {
+  max-width: 720px;
+  margin: 0 0 28px;
+  padding: 16px 20px;
+  border: 1px solid var(--color-accent);
+  border-left-width: 4px;
+  border-radius: var(--radius);
+  background: var(--color-accent-soft);
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+.about__facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 10px 32px;
+  margin: 0;
+}
+
+.about__facts dt {
+  color: var(--color-text-muted);
+}
+
+.about__facts dd {
+  margin: 0;
+}
+
+.about__selectable {
+  user-select: text;
+}

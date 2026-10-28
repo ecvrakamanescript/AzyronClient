@@ -1,0 +1,30 @@
+/*
+ * Design tokens. All colours of the launcher come from these variables;
+ * a theme (step 1.3) only overrides them, the layout CSS stays the same.
+ * Default theme: dark with violet accent.
+ */
+:root {
+  color-scheme: dark;
+
+  --color-bg: #0e0b14;
+  --color-surface: #141020;
+  --color-surface-raised: #1e182b;
+  --color-border: #2a2238;
+
+  --color-text: #ece8f5;
+  --color-text-muted: #8a83a0;
+
+  --color-accent: #8b5cf6;
+  --color-accent-hover: #a78bfa;
+  --color-accent-soft: rgba(139, 92, 246, 0.16);
+  --color-accent-contrast: #ffffff;
+  --color-glow: rgba(139, 92, 246, 0.2);
+
+  --color-danger: #e81123;
+  --color-danger-contrast: #ffffff;
+
+  --titlebar-height: 36px;
+  --sidebar-width: 220px;
+  --radius: 8px;
+  --font-family: 'Segoe UI', system-ui, sans-serif;
+}

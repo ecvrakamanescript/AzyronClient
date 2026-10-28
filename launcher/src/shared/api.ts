@@ -8,4 +8,17 @@ export interface AzyronApi {
     readonly chrome: string;
     readonly node: string;
   };
+  readonly app: {
+    /** Launcher version from package.json. */
+    getVersion(): Promise<string>;
+  };
+  /** Controls for the frameless main window (own title bar). */
+  readonly window: {
+    minimize(): void;
+    toggleMaximize(): void;
+    close(): void;
+    isMaximized(): Promise<boolean>;
+    /** Calls the listener whenever the window is maximized or restored. Returns a function to unsubscribe. */
+    onMaximizedChange(listener: (maximized: boolean) => void): () => void;
+  };
 }
