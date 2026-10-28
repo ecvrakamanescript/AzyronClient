@@ -1,0 +1,40 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: #0e0b14;
+  color: #ece8f5;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 100%;
+}
+
+.app__title {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 700;
+  color: #a78bfa;
+}
+
+.app__versions {
+  margin: 0;
+  font-size: 13px;
+  color: #8a83a0;
+}
