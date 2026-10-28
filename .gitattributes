@@ -1,0 +1,15 @@
+# Zeilenenden einheitlich halten (Windows-Rechner, plattformneutrales Repository)
+* text=auto eol=lf
+
+# Windows-Skripte brauchen CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binaerdateien nie veraendern
+*.png binary
+*.jpg binary
+*.ico binary
+*.jar binary
+*.ttf binary
+*.woff2 binary

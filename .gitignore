@@ -1,0 +1,74 @@
+# ------------------------------------------------------------
+# Zugangsdaten und Geheimnisse – gehoeren NIE ins Repository
+# ------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+secrets/
+**/azure.local.json
+**/auth-cache*.json
+
+# ------------------------------------------------------------
+# Lokale Dateien, nicht fuer das Repository
+# ------------------------------------------------------------
+CLAUDE.md
+claude.txt
+
+# ------------------------------------------------------------
+# Launcher (Node.js / Electron / TypeScript)
+# ------------------------------------------------------------
+node_modules/
+dist/
+out/
+release/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+.eslintcache
+
+# ------------------------------------------------------------
+# Client (Java / Gradle / Fabric Loom / Stonecutter)
+# ------------------------------------------------------------
+.gradle/
+build/
+run/
+runs/
+.kotlin/
+*.class
+hs_err_pid*
+replay_pid*
+# Gradle-Wrapper-JAR wird dagegen versioniert
+!gradle/wrapper/gradle-wrapper.jar
+
+# ------------------------------------------------------------
+# Minecraft-Dateien (duerfen nicht weiterverbreitet werden)
+# ------------------------------------------------------------
+*.minecraft/
+.minecraft/
+minecraft-*.jar
+
+# ------------------------------------------------------------
+# Entwicklungsumgebungen
+# ------------------------------------------------------------
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+!.vscode/extensions.json
+
+# ------------------------------------------------------------
+# Betriebssystem und Sonstiges
+# ------------------------------------------------------------
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.log
+*.tmp
