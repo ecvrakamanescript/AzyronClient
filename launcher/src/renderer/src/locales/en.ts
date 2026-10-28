@@ -16,6 +16,10 @@ const en = {
     restore: 'Restore',
     close: 'Close'
   },
+  home: {
+    characterPreview: 'Character preview',
+    notSignedIn: 'Not signed in'
+  },
   about: {
     version: 'Version {{version}}',
     contact: 'Contact',

@@ -16,6 +16,10 @@ const de: Translation = {
     restore: 'Wiederherstellen',
     close: 'Schliessen'
   },
+  home: {
+    characterPreview: 'Figurenvorschau',
+    notSignedIn: 'Nicht angemeldet'
+  },
   about: {
     version: 'Version {{version}}',
     contact: 'Kontakt',

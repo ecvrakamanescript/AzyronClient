@@ -596,6 +596,48 @@ button {
   font-weight: 700;
 }
 
+/* Home page: the character card sits in the middle of the free space below the title. */
+
+.home {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.home__stage {
+  display: grid;
+  flex: 1;
+  place-items: center;
+}
+
+.character-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+}
+
+/* Display only: the figure cannot be clicked, rotated or zoomed. */
+.skin-preview {
+  display: block;
+  pointer-events: none;
+}
+
+.character-card__name {
+  width: 100%;
+  margin: 0;
+  padding: 12px 16px 14px;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
 /*
  * Windows setting "Show animations" switched off: no movement at all.
  * The background glows stay visible but still; state changes apply instantly.

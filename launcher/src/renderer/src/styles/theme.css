@@ -13,6 +13,7 @@
   --titlebar-height: 36px;
   --sidebar-width: 220px;
   --radius: 8px;
+  --radius-large: 16px;
   --font-family: 'Segoe UI', system-ui, sans-serif;
 
   /* Motion: short and decelerating, so the UI feels responsive but calm. */
