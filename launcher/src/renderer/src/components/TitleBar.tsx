@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CloseIcon, MaximizeIcon, MinimizeIcon, RestoreIcon } from './Icons';
 
 export default function TitleBar() {
+  const { t } = useTranslation();
   const [maximized, setMaximized] = useState(false);
 
   // Read the current state once, then follow every change reported by the main process.
@@ -33,8 +35,8 @@ export default function TitleBar() {
         <button
           type="button"
           className="titlebar__button"
-          title="Minimize"
-          aria-label="Minimize"
+          title={t('titleBar.minimize')}
+          aria-label={t('titleBar.minimize')}
           onClick={() => window.azyron.window.minimize()}
         >
           <MinimizeIcon />
@@ -42,8 +44,8 @@ export default function TitleBar() {
         <button
           type="button"
           className="titlebar__button"
-          title={maximized ? 'Restore' : 'Maximize'}
-          aria-label={maximized ? 'Restore' : 'Maximize'}
+          title={maximized ? t('titleBar.restore') : t('titleBar.maximize')}
+          aria-label={maximized ? t('titleBar.restore') : t('titleBar.maximize')}
           onClick={() => window.azyron.window.toggleMaximize()}
         >
           {maximized ? <RestoreIcon /> : <MaximizeIcon />}
@@ -51,8 +53,8 @@ export default function TitleBar() {
         <button
           type="button"
           className="titlebar__button titlebar__button--close"
-          title="Close"
-          aria-label="Close"
+          title={t('titleBar.close')}
+          aria-label={t('titleBar.close')}
           onClick={() => window.azyron.window.close()}
         >
           <CloseIcon />

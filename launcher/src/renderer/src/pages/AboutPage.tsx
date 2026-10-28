@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface AboutPageProps {
   title: string;
 }
 
 export default function AboutPage({ title }: AboutPageProps) {
+  const { t } = useTranslation();
   const [version, setVersion] = useState<string | null>(null);
   const { electron, chrome, node } = window.azyron.versions;
 
@@ -26,20 +28,20 @@ export default function AboutPage({ title }: AboutPageProps) {
 
       <div className="about__product">
         <span className="about__name">Azyron Client</span>
-        <span className="about__version">Version {version ?? '…'}</span>
+        <span className="about__version">{t('about.version', { version: version ?? '…' })}</span>
       </div>
 
-      {/* Required by the Minecraft Usage Guidelines; the wording must stay exactly like this. */}
+      {/* Required by the Minecraft Usage Guidelines; the wording must stay exactly like this in every language. */}
       <p className="about__disclaimer">
         NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.
       </p>
 
       <dl className="about__facts">
-        <dt>Contact</dt>
+        <dt>{t('about.contact')}</dt>
         <dd className="about__selectable">azyronclient@proton.me</dd>
-        <dt>License</dt>
+        <dt>{t('about.license')}</dt>
         <dd>GNU General Public License v3.0 (GPL-3.0)</dd>
-        <dt>Runtime</dt>
+        <dt>{t('about.runtime')}</dt>
         <dd>
           Electron {electron} · Chromium {chrome} · Node.js {node}
         </dd>

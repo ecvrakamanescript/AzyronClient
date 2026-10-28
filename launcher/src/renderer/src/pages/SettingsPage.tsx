@@ -1,44 +1,54 @@
-import type { ThemeId } from '../../../shared/themes';
-import { themeEntries } from '../theme';
+import type { MouseEvent } from 'react';
+import { useTranslation } from 'react-i18next';
+import type { Settings, SettingsChange } from '../../../shared/settings';
+import { themeIds } from '../../../shared/themes';
+import { languageEntries } from '../i18n';
 
 interface SettingsPageProps {
   title: string;
-  theme: ThemeId;
-  onThemeChange: (theme: ThemeId) => void;
+  settings: Settings;
+  onChange: (change: SettingsChange) => void;
 }
 
-export default function SettingsPage({ title, theme, onThemeChange }: SettingsPageProps) {
+// A mouse click on a label would focus its radio button, which then shows a focus ring
+// on the next key press; select the option directly instead. Keyboard input (arrow keys,
+// space) arrives with detail 0 and keeps the native behaviour.
+function selectOnMouseClick(select: () => void) {
+  return (event: MouseEvent<HTMLLabelElement>) => {
+    if (event.detail > 0) {
+      event.preventDefault();
+      select();
+    }
+  };
+}
+
+// As in the sidebar: mouse clicks do not move the focus, so no focus ring remains; Tab still works.
+function keepFocus(event: MouseEvent) {
+  event.preventDefault();
+}
+
+export default function SettingsPage({ title, settings, onChange }: SettingsPageProps) {
+  const { t } = useTranslation();
+
   return (
     <section className="page">
       <h1 className="page__title">{title}</h1>
 
       {/* Native radio buttons: arrow keys and screen readers work without extra code. */}
       <fieldset className="settings__group">
-        <legend className="settings__heading">Theme</legend>
-        <p className="settings__hint">The selected theme is applied and saved immediately.</p>
+        <legend className="settings__heading">{t('settings.themeHeading')}</legend>
+        <p className="settings__hint">{t('settings.themeHint')}</p>
 
-        {/* As in the sidebar: mouse clicks do not move the focus, so no focus ring remains; Tab still works. */}
-        <div className="theme-picker" onMouseDown={(event) => event.preventDefault()}>
-          {themeEntries.map(({ id, label, description }) => (
-            <label
-              key={id}
-              className="theme-option"
-              onClick={(event) => {
-                // A mouse click on a label would focus the radio button; select the theme directly instead.
-                // Keyboard input (arrow keys, space) arrives with detail 0 and keeps the native behaviour.
-                if (event.detail > 0) {
-                  event.preventDefault();
-                  onThemeChange(id);
-                }
-              }}
-            >
+        <div className="theme-picker" onMouseDown={keepFocus}>
+          {themeIds.map((id) => (
+            <label key={id} className="theme-option" onClick={selectOnMouseClick(() => onChange({ theme: id }))}>
               <input
                 type="radio"
                 name="theme"
                 value={id}
                 className="theme-option__input"
-                checked={id === theme}
-                onChange={() => onThemeChange(id)}
+                checked={id === settings.theme}
+                onChange={() => onChange({ theme: id })}
               />
               {/* The preview carries its own data-theme, so it shows that theme's colours from theme.css. */}
               <span className="theme-preview" data-theme={id} aria-hidden="true">
@@ -55,8 +65,36 @@ export default function SettingsPage({ title, theme, onThemeChange }: SettingsPa
                   </span>
                 </span>
               </span>
-              <span className="theme-option__label">{label}</span>
-              <span className="theme-option__description">{description}</span>
+              <span className="theme-option__label">{t(`themes.${id}.label`)}</span>
+              <span className="theme-option__description">{t(`themes.${id}.description`)}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset className="settings__group">
+        <legend className="settings__heading">{t('settings.languageHeading')}</legend>
+        <p className="settings__hint">{t('settings.languageHint')}</p>
+
+        <div className="language-picker" onMouseDown={keepFocus}>
+          {languageEntries.map(({ id, label }) => (
+            <label
+              key={id}
+              className="language-option"
+              onClick={selectOnMouseClick(() => onChange({ language: id }))}
+            >
+              <input
+                type="radio"
+                name="language"
+                value={id}
+                className="language-option__input"
+                checked={id === settings.language}
+                onChange={() => onChange({ language: id })}
+              />
+              {/* lang lets screen readers pronounce each name in its own language. */}
+              <span className="language-option__label" lang={id}>
+                {label}
+              </span>
             </label>
           ))}
         </div>
