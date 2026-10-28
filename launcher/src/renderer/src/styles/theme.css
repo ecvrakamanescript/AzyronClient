@@ -14,6 +14,11 @@
   --sidebar-width: 220px;
   --radius: 8px;
   --font-family: 'Segoe UI', system-ui, sans-serif;
+
+  /* Motion: short and decelerating, so the UI feels responsive but calm. */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 140ms;
+  --duration-medium: 240ms;
 }
 
 /* Dark with violet accent (default). */
@@ -34,6 +39,11 @@
   --color-accent-soft: rgba(139, 92, 246, 0.16);
   --color-accent-contrast: #ffffff;
   --color-glow: rgba(139, 92, 246, 0.2);
+  /* Second, cooler glow of the animated background. */
+  --color-glow-2: rgba(99, 102, 241, 0.12);
+  /* block shows the animated background glows, none hides them. */
+  --glow-display: block;
+  --shadow-raised: 0 10px 24px rgba(0, 0, 0, 0.35);
 
   --color-danger: #e81123;
   --color-danger-contrast: #ffffff;
@@ -56,12 +66,18 @@
   --color-accent-soft: rgba(124, 58, 237, 0.12);
   --color-accent-contrast: #ffffff;
   --color-glow: rgba(124, 58, 237, 0.1);
+  --color-glow-2: rgba(99, 102, 241, 0.08);
+  --glow-display: block;
+  --shadow-raised: 0 10px 24px rgba(27, 22, 38, 0.1);
 
   --color-danger: #e81123;
   --color-danger-contrast: #ffffff;
 }
 
-/* AMOLED black: background and surfaces pure black, separated by borders only; no glow. */
+/*
+ * AMOLED black: background and surfaces pure black, separated by borders only; no glow.
+ * The animated background is switched off, so black pixels stay off on OLED screens.
+ */
 [data-theme='amoled'] {
   color-scheme: dark;
 
@@ -78,6 +94,10 @@
   --color-accent-soft: rgba(139, 92, 246, 0.18);
   --color-accent-contrast: #ffffff;
   --color-glow: transparent;
+  --color-glow-2: transparent;
+  --glow-display: none;
+  /* A dark shadow is invisible on black; a faint accent glow lifts cards instead. */
+  --shadow-raised: 0 10px 24px rgba(139, 92, 246, 0.14);
 
   --color-danger: #e81123;
   --color-danger-contrast: #ffffff;

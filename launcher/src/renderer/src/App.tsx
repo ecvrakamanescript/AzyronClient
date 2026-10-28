@@ -54,7 +54,10 @@ export default function App({ initialSettings }: AppProps) {
       <TitleBar />
       <div className="app__body">
         <Sidebar current={current.id} onSelect={setCurrentId} />
-        <main className="app__content">{renderPage()}</main>
+        {/* key: every page change mounts a fresh content area, so the page fades in and starts at the top. */}
+        <main key={current.id} className="app__content">
+          {renderPage()}
+        </main>
       </div>
     </div>
   );
