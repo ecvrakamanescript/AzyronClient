@@ -15,6 +15,7 @@ function createMainWindow(): BrowserWindow {
     title: 'Azyron Client',
     backgroundColor: '#0e0b14',
     show: false,
+    autoHideMenuBar: true,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       contextIsolation: true,
@@ -41,14 +42,6 @@ function createMainWindow(): BrowserWindow {
     }
   });
 
-  if (isDev) {
-    win.webContents.on('before-input-event', (_event, input) => {
-      if (input.type === 'keyDown' && input.key === 'F12') {
-        win.webContents.toggleDevTools();
-      }
-    });
-  }
-
   // In dev mode electron-vite serves the UI with hot reload; otherwise load the built files.
   const rendererUrl = process.env['ELECTRON_RENDERER_URL'];
   if (isDev && rendererUrl) {
@@ -64,12 +57,26 @@ function createMainWindow(): BrowserWindow {
   return win;
 }
 
+// Without a menu there is no menu bar (File, Edit, ...); the launcher brings its own UI.
+// In dev mode a hidden menu provides shortcuts that work in the whole window,
+// including docked DevTools (keys pressed there never reach the page).
+function createAppMenu(): Menu | null {
+  if (!isDev) {
+    return null;
+  }
+  return Menu.buildFromTemplate([
+    {
+      label: 'Development',
+      submenu: [{ role: 'toggleDevTools', accelerator: 'F12' }, { role: 'reload' }]
+    }
+  ]);
+}
+
 // Only one launcher may run at a time; a second start focuses the existing window.
 if (!app.requestSingleInstanceLock()) {
   app.quit();
 } else {
-  // No default menu bar (File, Edit, ...); the launcher brings its own UI.
-  Menu.setApplicationMenu(null);
+  Menu.setApplicationMenu(createAppMenu());
 
   app.on('second-instance', () => {
     if (mainWindow) {
