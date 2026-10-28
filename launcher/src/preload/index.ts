@@ -24,6 +24,10 @@ const api: AzyronApi = {
         ipcRenderer.removeListener(IpcChannels.windowMaximizedChanged, handler);
       };
     }
+  },
+  settings: {
+    get: () => ipcRenderer.invoke(IpcChannels.settingsGet),
+    set: (change) => ipcRenderer.invoke(IpcChannels.settingsSet, change)
   }
 };
 

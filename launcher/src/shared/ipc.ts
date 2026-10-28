@@ -8,5 +8,7 @@ export const IpcChannels = {
   windowToggleMaximize: 'window:toggle-maximize',
   windowClose: 'window:close',
   windowIsMaximized: 'window:is-maximized',
-  windowMaximizedChanged: 'window:maximized-changed'
+  windowMaximizedChanged: 'window:maximized-changed',
+  settingsGet: 'settings:get',
+  settingsSet: 'settings:set'
 } as const;

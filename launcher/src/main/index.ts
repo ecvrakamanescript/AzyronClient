@@ -1,5 +1,7 @@
 import { join } from 'node:path';
 import { app, BrowserWindow, Menu, shell } from 'electron';
+import { themeBackgrounds } from '../shared/themes';
+import { getSettings, loadSettings, registerSettingsHandlers } from './settings';
 import { forwardMaximizedState, registerIpcHandlers } from './window-controls';
 
 // Not packaged means started from source (npm run dev / npm start).
@@ -14,7 +16,8 @@ function createMainWindow(): BrowserWindow {
     minWidth: 1024,
     minHeight: 640,
     title: 'Azyron Client',
-    backgroundColor: '#0e0b14',
+    // Same colour as the stored theme, so nothing flashes before the UI is drawn.
+    backgroundColor: themeBackgrounds[getSettings().theme],
     // No Windows title bar: the launcher draws its own (TitleBar.tsx).
     // Resizing at the edges and Aero Snap keep working.
     frame: false,
@@ -94,7 +97,12 @@ if (!app.requestSingleInstanceLock()) {
   });
 
   void app.whenReady().then(() => {
+    // Settings are needed before the window exists (background colour of the theme).
+    loadSettings();
     registerIpcHandlers();
+    registerSettingsHandlers((settings) => {
+      mainWindow?.setBackgroundColor(themeBackgrounds[settings.theme]);
+    });
     mainWindow = createMainWindow();
   });
 
