@@ -15,7 +15,8 @@
     "start": "electron-vite preview",
     "typecheck": "npm run typecheck:node && npm run typecheck:web",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json",
-    "typecheck:web": "tsc --noEmit -p tsconfig.web.json"
+    "typecheck:web": "tsc --noEmit -p tsconfig.web.json",
+    "test": "vitest run"
   },
   "dependencies": {
     "i18next": "26.5.11",
@@ -32,6 +33,7 @@
     "electron": "45.1.0",
     "electron-vite": "6.0.0",
     "typescript": "7.0.2",
-    "vite": "8.3.5"
+    "vite": "8.3.5",
+    "vitest": "5.0.5"
   }
 }
