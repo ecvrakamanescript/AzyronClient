@@ -9,6 +9,7 @@
 # Never modify binary files
 *.png binary
 *.jpg binary
+*.webp binary
 *.ico binary
 *.jar binary
 *.ttf binary

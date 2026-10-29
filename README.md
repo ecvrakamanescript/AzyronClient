@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/images/logo.webp" alt="Azyron Client logo" width="240">
+</p>
+
 # Azyron Client
 
 A free Minecraft: Java Edition client with its own launcher for Windows.
