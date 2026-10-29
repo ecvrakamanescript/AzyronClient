@@ -1,13 +1,15 @@
+// Build script for Minecraft 26.1 and newer (not obfuscated).
+// Keep in sync with build.obfuscated.gradle.kts.
 plugins {
-    // Plugin for Minecraft versions that are not obfuscated (26.1 and newer)
     id("net.fabricmc.fabric-loom") version "1.19.3"
 }
 
-group = providers.gradleProperty("maven_group").get()
-version = providers.gradleProperty("mod_version").get()
+group = property("maven_group") as String
+version = property("mod_version") as String
 
-val minecraftVersion = providers.gradleProperty("minecraft_version").get()
-val loaderVersion = providers.gradleProperty("loader_version").get()
+val minecraftVersion = stonecutter.current.version
+val loaderVersion = property("loader_version") as String
+val javaVersion = (property("java_version") as String).toInt()
 
 base {
     archivesName = "azyron-client-$minecraftVersion"
@@ -27,6 +29,7 @@ tasks.processResources {
         "version" to project.version,
         "minecraft_version" to minecraftVersion,
         "loader_version" to loaderVersion,
+        "java_version" to javaVersion,
     )
     inputs.properties(properties)
     filesMatching("fabric.mod.json") {
@@ -34,13 +37,17 @@ tasks.processResources {
     }
 }
 
+java {
+    // Compiles and runs (runClient) with the Java version this Minecraft version requires
+    toolchain.languageVersion = JavaLanguageVersion.of(javaVersion)
+}
+
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
-    // Minecraft 26.x requires Java 25
-    options.release = 25
+    options.release = javaVersion
 }
 
 tasks.jar {
     // Ship the license with the client
-    from(layout.projectDirectory.file("../../LICENSE"))
+    from(rootDir.resolve("../LICENSE"))
 }
