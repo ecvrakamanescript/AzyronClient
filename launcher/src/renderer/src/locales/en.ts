@@ -52,11 +52,15 @@ const en = {
     installed: 'Installed',
     failedDiskSpace: 'Not enough disk space.',
     failedNetwork: 'Download failed. Check your internet connection.',
-    failedOther: 'Installation failed.'
+    failedOther: 'Installation failed.',
+    play: 'Play',
+    signInToPlay: 'Sign in to play'
   },
   home: {
     characterPreview: 'Character preview',
-    notSignedIn: 'Not signed in'
+    notSignedIn: 'Not signed in',
+    signIn: 'Sign in',
+    signInSoon: 'Microsoft sign-in will be available soon.'
   },
   about: {
     version: 'Version {{version}}',

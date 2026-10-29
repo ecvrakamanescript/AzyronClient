@@ -1,12 +1,14 @@
 import { release } from 'node:os';
-import { BrowserWindow, ipcMain, shell } from 'electron';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import type { InstallState, InstallStateEvent } from '../../shared/install';
 import { IpcChannels } from '../../shared/ipc';
 import { InstallManager } from './install';
 import { InstanceStore } from './instances';
+import { probeJava } from './java';
+import { checkLaunch } from './launch';
 import { loadManifest, supportedVersions, toVersionList, type VersionManifest } from './manifest';
 import type { GamePaths } from './paths';
-import { toWindowsArch } from './rules';
+import { toWindowsArch, type RuleEnvironment } from './rules';
 
 // The manifest is loaded again at most every ten minutes.
 const MANIFEST_MAX_AGE_MS = 10 * 60 * 1000;
@@ -17,13 +19,15 @@ export class GameContext {
   private loading: Promise<{ manifest: VersionManifest; offline: boolean }> | null = null;
   readonly instances: InstanceStore;
   readonly installs: InstallManager;
+  /** This computer as Mojang's rules see it. */
+  readonly env: RuleEnvironment = { arch: toWindowsArch(process.arch), osVersion: release(), features: {} };
 
   constructor(readonly paths: GamePaths) {
     this.instances = new InstanceStore(paths);
     this.installs = new InstallManager(
       {
         paths,
-        env: { arch: toWindowsArch(process.arch), osVersion: release(), features: {} },
+        env: this.env,
         findVersion: (versionId) => this.findSupportedVersion(versionId)
       },
       // Every window shows the same installations.
@@ -59,7 +63,7 @@ export class GameContext {
   }
 }
 
-/** Registers the IPC handlers behind window.azyron.gameVersions, .instances and .install. */
+/** Registers the IPC handlers behind window.azyron.gameVersions, .instances, .install and .launch. */
 export function registerGameHandlers(context: GameContext): void {
   ipcMain.handle(IpcChannels.versionsList, async (_event, includeSnapshots: unknown) => {
     const { manifest, offline } = await context.getManifest();
@@ -107,5 +111,20 @@ export function registerGameHandlers(context: GameContext): void {
 
   ipcMain.handle(IpcChannels.installCancel, (_event, versionId: unknown) => {
     context.installs.cancel(String(versionId));
+  });
+
+  ipcMain.handle(IpcChannels.launchCheck, async (_event, instanceId: unknown) => {
+    const instance = await context.instances.get(String(instanceId));
+    if (!instance) {
+      throw new Error('Instance not found');
+    }
+    return checkLaunch({
+      paths: context.paths,
+      versionId: instance.versionId,
+      env: context.env,
+      gameDirectory: context.instances.folder(instance.id),
+      launcherVersion: app.getVersion(),
+      probeJava
+    });
   });
 }

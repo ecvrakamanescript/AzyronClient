@@ -51,6 +51,9 @@ const api: AzyronApi = {
         ipcRenderer.removeListener(IpcChannels.installStateChanged, handler);
       };
     }
+  },
+  launch: {
+    check: (instanceId) => ipcRenderer.invoke(IpcChannels.launchCheck, instanceId)
   }
 };
 

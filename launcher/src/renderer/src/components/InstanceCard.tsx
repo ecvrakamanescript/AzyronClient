@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import type { InstallProgress, InstallState } from '../../../shared/install';
 import type { Instance } from '../../../shared/instances';
+import { useAccount } from '../account';
 import { CheckIcon, FolderIcon, InstancesIcon, PencilIcon, TrashIcon, XIcon } from './Icons';
 
 interface InstanceCardProps {
@@ -28,6 +29,7 @@ function stageText(progress: InstallProgress, t: ReturnType<typeof useTranslatio
 /** Install button, progress bar or result, depending on the installation state. */
 function InstallArea({ versionId, state }: { versionId: string; state: InstallState | undefined }) {
   const { t } = useTranslation();
+  const account = useAccount();
   if (!state) {
     return <div className="install-area" />;
   }
@@ -80,9 +82,18 @@ function InstallArea({ versionId, state }: { versionId: string; state: InstallSt
     case 'installed':
       return (
         <div className="install-area">
-          <span className="install-area__done">
+          {/* Playing needs a signed-in account; until the sign-in exists the button stays locked. */}
+          <button
+            type="button"
+            className="button button--primary button--small"
+            disabled={!account}
+            title={account ? undefined : t('instances.signInToPlay')}
+          >
+            {t('instances.play')}
+          </button>
+          {!account && <span className="install-area__hint">{t('instances.signInToPlay')}</span>}
+          <span className="install-area__done" role="img" title={t('instances.installed')} aria-label={t('instances.installed')}>
             <CheckIcon className="install-area__done-icon" />
-            {t('instances.installed')}
           </span>
         </div>
       );

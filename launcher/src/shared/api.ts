@@ -1,5 +1,6 @@
 import type { InstallState, InstallStateEvent } from './install';
 import type { Instance } from './instances';
+import type { LaunchCheck } from './launch';
 import type { Settings, SettingsChange } from './settings';
 import type { VersionList } from './versions';
 
@@ -54,5 +55,10 @@ export interface AzyronApi {
     cancel(versionId: string): Promise<void>;
     /** Calls the listener on every change of an installation. Returns a function to unsubscribe. */
     onStateChange(listener: (event: InstallStateEvent) => void): () => void;
+  };
+  /** Starting the game. Until the Microsoft sign-in exists, only the check is available. */
+  readonly launch: {
+    /** Checks files and Java of an instance without starting the game. */
+    check(instanceId: string): Promise<LaunchCheck>;
   };
 }

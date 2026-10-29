@@ -18,7 +18,14 @@ export default function HomePage({ title, theme }: HomePageProps) {
         {/* Placeholder figure until Microsoft login (phase 2) provides the account's skin and cape. */}
         <div className="character-card">
           <SkinPreview theme={theme} label={t('home.characterPreview')} />
-          <p className="character-card__name">{t('home.notSignedIn')}</p>
+          <div className="character-card__footer">
+            <p className="character-card__name">{t('home.notSignedIn')}</p>
+            {/* Placeholder: the Microsoft sign-in follows once Mojang has approved the client ID. */}
+            <button type="button" className="button button--primary button--small" disabled title={t('home.signInSoon')}>
+              {t('home.signIn')}
+            </button>
+            <p className="character-card__hint">{t('home.signInSoon')}</p>
+          </div>
         </div>
       </div>
     </section>

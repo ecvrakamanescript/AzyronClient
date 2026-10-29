@@ -52,11 +52,15 @@ const de: Translation = {
     installed: 'Installiert',
     failedDiskSpace: 'Nicht genug Speicherplatz.',
     failedNetwork: 'Download fehlgeschlagen. Prüfe deine Internetverbindung.',
-    failedOther: 'Installation fehlgeschlagen.'
+    failedOther: 'Installation fehlgeschlagen.',
+    play: 'Spielen',
+    signInToPlay: 'Zum Spielen anmelden'
   },
   home: {
     characterPreview: 'Figurenvorschau',
-    notSignedIn: 'Nicht angemeldet'
+    notSignedIn: 'Nicht angemeldet',
+    signIn: 'Anmelden',
+    signInSoon: 'Die Anmeldung mit Microsoft folgt bald.'
   },
   about: {
     version: 'Version {{version}}',
