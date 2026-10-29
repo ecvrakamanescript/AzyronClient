@@ -10,10 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class KeySettingTest {
-    /** GLFW_KEY_RIGHT_SHIFT */
-    private static final int RIGHT_SHIFT = 344;
-    /** GLFW_KEY_C */
-    private static final int C = 67;
+    private static final String C = "key.keyboard.c";
+    private static final String RIGHT_SHIFT = "key.keyboard.right.shift";
 
     @Test
     void storesAKey() {
@@ -38,18 +36,56 @@ class KeySettingTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {KeySetting.FIRST_KEY, KeySetting.LAST_KEY})
-    void acceptsTheFirstAndLastKey(int key) {
+    @ValueSource(strings = {
+            "key.keyboard.a",
+            "key.keyboard.0",
+            "key.keyboard.f24",
+            "key.keyboard.keypad.enter",
+            "key.keyboard.left.control",
+            "key.mouse.left",
+            "key.mouse.4",
+            "key.mouse.8"
+    })
+    void acceptsKeyboardKeysAndMouseButtons(String key) {
         assertEquals(key, new KeySetting("zoom_key", key).get());
     }
 
+    @Test
+    void acceptsNamesUpToTheMaximumLength() {
+        String longest = "key.keyboard." + "a".repeat(KeySetting.MAX_LENGTH - "key.keyboard.".length());
+
+        assertEquals(KeySetting.MAX_LENGTH, longest.length());
+        assertTrue(KeySetting.isValidName(longest));
+        assertFalse(KeySetting.isValidName(longest + "a"));
+    }
+
     @ParameterizedTest
-    @ValueSource(ints = {-2, 0, 31, 349, 1000, Integer.MIN_VALUE, Integer.MAX_VALUE})
-    void rejectsInvalidKeyCodes(int key) {
+    @ValueSource(strings = {
+            "",
+            "c",
+            "67",
+            "key.keyboard",
+            "key.keyboard.",
+            "key.keyboard..c",
+            "key.keyboard.c.",
+            "key.keyboard.C",
+            "key.keyboard.right shift",
+            "key.gamepad.a",
+            "KEY.KEYBOARD.C",
+            " key.keyboard.c"
+    })
+    void rejectsInvalidKeyNames(String key) {
+        assertFalse(KeySetting.isValidName(key));
         assertThrows(IllegalArgumentException.class, () -> new KeySetting("zoom_key", key));
 
         KeySetting setting = new KeySetting("zoom_key", C);
         assertThrows(IllegalArgumentException.class, () -> setting.set(key));
         assertEquals(C, setting.get());
+    }
+
+    @Test
+    void rejectsNull() {
+        assertFalse(KeySetting.isValidName(null));
+        assertThrows(RuntimeException.class, () -> new KeySetting("zoom_key", null));
     }
 }

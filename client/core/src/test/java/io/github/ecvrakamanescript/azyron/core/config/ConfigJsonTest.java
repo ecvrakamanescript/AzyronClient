@@ -55,7 +55,7 @@ class ConfigJsonTest {
                 "        \"scale\": 1.5,",
                 "        \"color\": \"#FF7C3AED\",",
                 "        \"background\": \"#80000000\",",
-                "        \"key\": -1,",
+                "        \"key\": \"key.keyboard.unknown\",",
                 "        \"mode\": \"smooth\"",
                 "      }",
                 "    },",
@@ -66,7 +66,7 @@ class ConfigJsonTest {
                 "        \"scale\": 1.0,",
                 "        \"color\": \"#FF7C3AED\",",
                 "        \"background\": \"#80000000\",",
-                "        \"key\": 67,",
+                "        \"key\": \"key.keyboard.c\",",
                 "        \"mode\": \"smooth\"",
                 "      }",
                 "    }",
@@ -94,7 +94,7 @@ class ConfigJsonTest {
         fps.scale.set(0.7);
         fps.color.set(0xFF123456);
         fps.background.set(0x00FFFFFF);
-        fps.key.set(344);
+        fps.key.set("key.mouse.4");
         fps.mode.set("instant");
         String json = write();
 
@@ -108,7 +108,7 @@ class ConfigJsonTest {
         assertEquals(0.7, fps.scale.get());
         assertEquals(0xFF123456, fps.color.get());
         assertEquals(0x00FFFFFF, fps.background.get());
-        assertEquals(344, fps.key.get());
+        assertEquals("key.mouse.4", fps.key.get());
         assertEquals("instant", fps.mode.get());
         assertTrue(zoom.hasDefaultSettings());
     }
@@ -183,24 +183,24 @@ class ConfigJsonTest {
     void invalidSettingValuesUseTheDefault() throws JsonFormatException {
         apply("{\"version\": 1, \"modules\": {\"fps\": {\"settings\": {"
                 + "\"shadow\": 1, \"scale\": \"big\", \"color\": \"red\", \"background\": \"#12345\","
-                + " \"key\": 1.5, \"mode\": 3}}}}");
+                + " \"key\": 67, \"mode\": 3}}}}");
 
         assertEquals(List.of(
                 "modules.fps.settings.shadow: invalid value 1, using the default value",
                 "modules.fps.settings.scale: invalid value \"big\", using the default value",
                 "modules.fps.settings.color: invalid value \"red\", using the default value",
                 "modules.fps.settings.background: invalid value \"#12345\", using the default value",
-                "modules.fps.settings.key: invalid value 1.5, using the default value",
+                "modules.fps.settings.key: invalid value 67, using the default value",
                 "modules.fps.settings.mode: invalid value 3, using the default value"), warnings);
         assertTrue(fps.hasDefaultSettings());
     }
 
     @Test
     void valuesRejectedBySettingsUseTheDefault() throws JsonFormatException {
-        apply("{\"version\": 1, \"modules\": {\"fps\": {\"settings\": {\"key\": 1000, \"mode\": \"fast\", \"scale\": 1e400}}}}");
+        apply("{\"version\": 1, \"modules\": {\"fps\": {\"settings\": {\"key\": \"right shift\", \"mode\": \"fast\", \"scale\": 1e400}}}}");
 
         assertEquals(List.of(
-                "modules.fps.settings.key: Invalid key code: 1000, using the default value",
+                "modules.fps.settings.key: Invalid key name: \"right shift\", using the default value",
                 "modules.fps.settings.mode: Unknown option: \"fast\", using the default value",
                 "modules.fps.settings.scale: invalid value Infinity, using the default value"), warnings);
         assertTrue(fps.hasDefaultSettings());
@@ -237,11 +237,15 @@ class ConfigJsonTest {
     }
 
     @Test
-    void readsKeysWrittenAsWholeNumbers() throws JsonFormatException {
-        apply("{\"version\": 1, \"modules\": {\"fps\": {\"settings\": {\"key\": 344.0}}, \"zoom\": {\"settings\": {\"key\": -1}}}}");
+    void readsKeysAndMouseButtons() throws JsonFormatException {
+        apply("{\"version\": 1, \"modules\": {\"fps\": {\"settings\": {\"key\": \"key.keyboard.right.shift\"}},"
+                + " \"zoom\": {\"settings\": {\"key\": \"key.keyboard.unknown\"}}}}");
 
         assertTrue(warnings.isEmpty(), warnings.toString());
-        assertEquals(344, fps.key.get());
+        assertEquals("key.keyboard.right.shift", fps.key.get());
         assertFalse(zoom.key.isBound());
+
+        apply("{\"version\": 1, \"modules\": {\"fps\": {\"settings\": {\"key\": \"key.mouse.5\"}}}}");
+        assertEquals("key.mouse.5", fps.key.get());
     }
 }

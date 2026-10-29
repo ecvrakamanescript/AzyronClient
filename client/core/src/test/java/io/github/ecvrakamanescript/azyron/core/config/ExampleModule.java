@@ -10,8 +10,7 @@ import io.github.ecvrakamanescript.azyron.core.module.setting.NumberSetting;
 
 /** Module for the tests with one setting of every type. */
 final class ExampleModule extends Module {
-    /** GLFW_KEY_C */
-    static final int DEFAULT_KEY = 67;
+    static final String DEFAULT_KEY = "key.keyboard.c";
 
     final BooleanSetting shadow = addSetting(new BooleanSetting("shadow", true));
     final NumberSetting scale = addSetting(new NumberSetting("scale", 1, 0.5, 2, 0.1));

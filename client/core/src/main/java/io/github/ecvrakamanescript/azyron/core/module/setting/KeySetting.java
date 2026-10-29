@@ -1,23 +1,29 @@
 package io.github.ecvrakamanescript.azyron.core.module.setting;
 
-/**
- * A keyboard key, stored as a GLFW key code so that it does not depend on the Minecraft version.
- * The 1.8.9 client converts its LWJGL 2 key codes to GLFW key codes.
- */
-public final class KeySetting extends Setting<Integer> {
-    /** No key assigned (GLFW_KEY_UNKNOWN). */
-    public static final int NONE = -1;
-    /** Lowest GLFW key code (GLFW_KEY_SPACE). */
-    public static final int FIRST_KEY = 32;
-    /** Highest GLFW key code (GLFW_KEY_LAST). */
-    public static final int LAST_KEY = 348;
+import java.util.regex.Pattern;
 
-    public KeySetting(String id, int defaultKey) {
+/**
+ * A keyboard key or mouse button, stored by its Minecraft key name such as "key.keyboard.c" or
+ * "key.mouse.4", as in Minecraft's options.txt. The names are the same in every version, while the
+ * key codes are not (GLFW up to 1.21.11, SDL since 26.1, LWJGL 2 in 1.8.9).
+ * <p>
+ * Only the form of the name is checked here. Whether the running Minecraft version knows the key
+ * is checked by the version adapter.
+ */
+public final class KeySetting extends Setting<String> {
+    /** No key assigned. */
+    public static final String NONE = "key.keyboard.unknown";
+    /** Longest accepted key name. */
+    public static final int MAX_LENGTH = 64;
+
+    private static final Pattern NAME = Pattern.compile("key\\.(keyboard|mouse)(\\.[a-z0-9]+)+");
+
+    public KeySetting(String id, String defaultKey) {
         super(id, checked(defaultKey));
     }
 
     public boolean isBound() {
-        return get() != NONE;
+        return !get().equals(NONE);
     }
 
     /** Removes the key. */
@@ -25,14 +31,19 @@ public final class KeySetting extends Setting<Integer> {
         set(NONE);
     }
 
+    /** Whether the text has the form of a Minecraft key name. */
+    public static boolean isValidName(String name) {
+        return name != null && name.length() <= MAX_LENGTH && NAME.matcher(name).matches();
+    }
+
     @Override
-    protected Integer normalize(Integer key) {
+    protected String normalize(String key) {
         return checked(key);
     }
 
-    private static int checked(int key) {
-        if (key != NONE && (key < FIRST_KEY || key > LAST_KEY)) {
-            throw new IllegalArgumentException("Invalid key code: " + key);
+    private static String checked(String key) {
+        if (!isValidName(key)) {
+            throw new IllegalArgumentException("Invalid key name: \"" + key + "\"");
         }
         return key;
     }

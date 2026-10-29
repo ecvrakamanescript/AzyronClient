@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  *   }
  * }
  * </pre>
- * Colors are written as "#AARRGGBB" and keys as GLFW key codes.
+ * Colors are written as "#AARRGGBB" and keys by their Minecraft key name ("key.keyboard.c").
  */
 final class ConfigJson {
     /** Format version of the file. Raise it when the format changes in an incompatible way. */
@@ -70,7 +70,7 @@ final class ConfigJson {
         } else if (setting instanceof ColorSetting) {
             json.name(setting.id()).value(String.format(Locale.ROOT, "#%08X", ((ColorSetting) setting).get()));
         } else if (setting instanceof KeySetting) {
-            json.name(setting.id()).value(((KeySetting) setting).get().longValue());
+            json.name(setting.id()).value(((KeySetting) setting).get());
         } else if (setting instanceof ChoiceSetting) {
             json.name(setting.id()).value(((ChoiceSetting) setting).get());
         }
@@ -157,8 +157,8 @@ final class ConfigJson {
                 ((NumberSetting) setting).set((Double) value);
                 return;
             }
-            if (setting instanceof KeySetting && value instanceof Double && isInt((Double) value)) {
-                ((KeySetting) setting).set(((Double) value).intValue());
+            if (setting instanceof KeySetting && value instanceof String) {
+                ((KeySetting) setting).set((String) value);
                 return;
             }
             if (setting instanceof ColorSetting && value instanceof String && COLOR.matcher((String) value).matches()) {
