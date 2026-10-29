@@ -2,7 +2,12 @@
 
 A free Minecraft: Java Edition client with its own launcher for Windows.
 
-> **Status:** Phase 0 – preparation. There is no working code yet.
+> **Status:** In development, not ready for use yet. There is no release.
+
+## Current state
+
+- **Launcher:** main window with dark, light and AMOLED black themes, English and German, list of Minecraft versions from 1.21, instances, installation of a version including the matching Java runtime from Mojang's servers. Microsoft sign-in and starting the game are not available yet; they need Mojang's approval of the launcher's sign-in, which is pending.
+- **Client:** builds for Minecraft 26.3 and 1.21.11, module system, configuration file, in-game menu on Right Shift, and the base for a new menu and HUD in the launcher's style that stays sharp up to 4K. The first HUD modules are next.
 
 ## Overview
 
@@ -10,7 +15,7 @@ A free Minecraft: Java Edition client with its own launcher for Windows.
 |---|---|---|
 | Launcher | Electron, TypeScript | `launcher/` |
 | Client core (version-independent) | Java | `client/core/` |
-| Client, modern versions (1.21 up to the latest snapshot) | Fabric, Stonecutter | `client/modern/` |
+| Client, modern versions (currently 26.3 and 1.21.11; planned: 1.21 up to the latest snapshot) | Fabric, Stonecutter | `client/modern/` |
 | Client, 1.8.9 | Legacy Fabric or Forge (decision pending) | `client/legacy-1.8.9/` |
 | Cosmetics server (later) | to be decided | `backend/` |
 | Documentation | Markdown | `docs/` |
@@ -30,7 +35,26 @@ At the same time, Azyron Client is fully open source. The complete source code o
 
 ## Development
 
-Requirements and setup instructions will follow in [`docs/`](docs/) once Phase 1 starts.
+Requirements: Windows, [Git](https://git-scm.com/), [Node.js](https://nodejs.org/) 24 LTS, and the JDKs 21 and 25 (for example [Eclipse Temurin](https://adoptium.net/)).
+
+Launcher (in `launcher/`):
+
+```
+npm install
+npm run dev
+npm test
+```
+
+`npm run dev` starts the launcher with hot reload, `npm run build` checks the types and builds it.
+
+Client (in `client/`):
+
+```
+.\gradlew.bat build
+.\gradlew.bat :modern:26.3:runClient
+```
+
+`build` runs the tests and builds the client for every supported Minecraft version. `runClient` starts Minecraft with the client for local development; use `:modern:1.21.11:runClient` for 1.21.11. Gradle downloads the game files from Mojang's servers.
 
 ## License
 
