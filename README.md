@@ -22,6 +22,12 @@ A free Minecraft: Java Edition client with its own launcher for Windows.
 
 No cheat features. Only features that are commonly allowed on servers will be implemented.
 
+## Launcher only, open source
+
+Azyron Client is launcher-only: the client is installed, updated and started exclusively by the Azyron Client launcher. It is not offered as a mod for other launchers.
+
+At the same time, Azyron Client is fully open source. The complete source code of the launcher and the client is in this repository under the GPL-3.0, so anyone can read, review and build it.
+
 ## Development
 
 Requirements and setup instructions will follow in [`docs/`](docs/) once Phase 1 starts.
