@@ -21,5 +21,6 @@ export const IpcChannels = {
   installStart: 'install:start',
   installCancel: 'install:cancel',
   installStateChanged: 'install:state-changed',
-  launchCheck: 'launch:check'
+  launchCheck: 'launch:check',
+  skinsDefault: 'skins:default'
 } as const;

@@ -61,4 +61,8 @@ export interface AzyronApi {
     /** Checks files and Java of an instance without starting the game. */
     check(instanceId: string): Promise<LaunchCheck>;
   };
+  readonly skins: {
+    /** Minecraft's default skin (Steve) as a PNG data URL from an installed version, or null. */
+    getDefault(): Promise<string | null>;
+  };
 }

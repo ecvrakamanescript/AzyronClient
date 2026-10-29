@@ -2,6 +2,7 @@ import { release } from 'node:os';
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import type { InstallState, InstallStateEvent } from '../../shared/install';
 import { IpcChannels } from '../../shared/ipc';
+import { readDefaultSkin } from './defaultSkin';
 import { InstallManager } from './install';
 import { InstanceStore } from './instances';
 import { probeJava } from './java';
@@ -63,7 +64,7 @@ export class GameContext {
   }
 }
 
-/** Registers the IPC handlers behind window.azyron.gameVersions, .instances, .install and .launch. */
+/** Registers the IPC handlers behind window.azyron.gameVersions, .instances, .install, .launch and .skins. */
 export function registerGameHandlers(context: GameContext): void {
   ipcMain.handle(IpcChannels.versionsList, async (_event, includeSnapshots: unknown) => {
     const { manifest, offline } = await context.getManifest();
@@ -127,4 +128,6 @@ export function registerGameHandlers(context: GameContext): void {
       probeJava
     });
   });
+
+  ipcMain.handle(IpcChannels.skinsDefault, () => readDefaultSkin(context.paths));
 }

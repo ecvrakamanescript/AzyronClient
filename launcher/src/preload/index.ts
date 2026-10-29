@@ -54,6 +54,9 @@ const api: AzyronApi = {
   },
   launch: {
     check: (instanceId) => ipcRenderer.invoke(IpcChannels.launchCheck, instanceId)
+  },
+  skins: {
+    getDefault: () => ipcRenderer.invoke(IpcChannels.skinsDefault)
   }
 };
 
