@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "azyronclient",
+  "version": "${version}",
+  "name": "Azyron Client",
+  "description": "Client for Minecraft Java Edition, available only through the Azyron Client launcher. NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.",
+  "authors": ["ecvr"],
+  "contact": {
+    "email": "azyronclient@proton.me",
+    "sources": "https://github.com/ecvrakamanescript/AzyronClient"
+  },
+  "license": "GPL-3.0-only",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["io.github.ecvrakamanescript.azyron.client.AzyronClientMod"]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "${minecraft_version}",
+    "java": ">=25"
+  }
+}
