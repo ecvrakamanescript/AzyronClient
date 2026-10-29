@@ -13,7 +13,16 @@ repositories {
     mavenCentral()
 }
 
+// Newest Gson that Minecraft ships (26.3), for the second test run
+val gsonLatest = configurations.create("gsonLatest")
+
 dependencies {
+    // Minecraft provides Gson at runtime. Compiling against the oldest version (Minecraft 1.8.9)
+    // makes sure the core only uses API that exists in every version.
+    compileOnly("com.google.code.gson:gson:2.2.4")
+    testImplementation("com.google.code.gson:gson:2.2.4")
+    gsonLatest("com.google.code.gson:gson:2.14.0")
+
     // Only for the tests; JUnit is not part of the client JAR
     testImplementation(platform("org.junit:junit-bom:6.1.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
@@ -35,4 +44,17 @@ tasks.compileTestJava {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+// Runs the same tests with Gson 2.14.0 instead of 2.2.4
+val testGsonLatest = tasks.register<Test>("testGsonLatest") {
+    description = "Runs the tests with the newest Gson that Minecraft ships."
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    useJUnitPlatform()
+    testClassesDirs = sourceSets.test.get().output.classesDirs
+    classpath = sourceSets.test.get().runtimeClasspath.filter { !it.name.startsWith("gson-") } + gsonLatest
+}
+
+tasks.check {
+    dependsOn(testGsonLatest)
 }
