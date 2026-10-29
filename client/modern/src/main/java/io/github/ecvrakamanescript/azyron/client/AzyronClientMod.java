@@ -19,16 +19,23 @@ public final class AzyronClientMod implements ClientModInitializer {
 
     private static final ModuleManager MODULES = new ModuleManager();
     private static ConfigFile config;
+    private static boolean configCanBeSaved;
+    private static String clientVersion = "unknown";
 
     /** All modules of the client. */
     public static ModuleManager modules() {
         return MODULES;
     }
 
+    /** Version of the client, as in fabric.mod.json. */
+    public static String version() {
+        return clientVersion;
+    }
+
     @Override
     public void onInitializeClient() {
         FabricLoader loader = FabricLoader.getInstance();
-        String clientVersion = version(loader, MOD_ID);
+        clientVersion = version(loader, MOD_ID);
         String minecraftVersion = version(loader, "minecraft");
         LOGGER.info(AzyronCore.startMessage(clientVersion, minecraftVersion));
 
@@ -36,6 +43,8 @@ public final class AzyronClientMod implements ClientModInitializer {
         config = new ConfigFile(loader.getConfigDir());
         loadConfig();
         MODULES.start();
+
+        MenuKey.register();
     }
 
     private static void loadConfig() {
@@ -49,13 +58,16 @@ public final class AzyronClientMod implements ClientModInitializer {
             case BROKEN -> LOGGER.warn("Config file was damaged, using default values");
             case UNREADABLE -> LOGGER.error("Could not read the config file; it will not be saved, so it is not overwritten");
         }
+        configCanBeSaved = result.canSave();
         // Writes the file once, so that it exists and contains every module with valid values
-        if (result.canSave()) {
-            saveConfig();
-        }
+        saveConfig();
     }
 
-    private static void saveConfig() {
+    /** Saves all modules, unless the file could not be read at startup (then it is kept as it is). */
+    static void saveConfig() {
+        if (!configCanBeSaved) {
+            return;
+        }
         try {
             config.save(MODULES);
         } catch (IOException e) {

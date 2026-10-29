@@ -17,6 +17,10 @@
   "depends": {
     "fabricloader": ">=${loader_version}",
     "minecraft": "${minecraft_version}",
-    "java": ">=${java_version}"
+    "java": ">=${java_version}",
+    "fabric-api-base": "*",
+    "${fabric_key_api}": "*",
+    "fabric-lifecycle-events-v1": "*",
+    "fabric-resource-loader-v1": "*"
   }
 }

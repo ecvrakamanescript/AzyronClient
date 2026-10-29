@@ -1,0 +1,10 @@
+{
+  "key.category.azyronclient.main": "Azyron Client",
+  "key.azyronclient.open_menu": "Menü öffnen",
+  "azyronclient.menu.version": "Version %s",
+  "azyronclient.menu.no_modules": "Noch keine Module",
+  "azyronclient.category.hud": "HUD",
+  "azyronclient.category.pvp": "PvP",
+  "azyronclient.category.performance": "Leistung",
+  "azyronclient.category.utility": "Hilfsmittel"
+}
