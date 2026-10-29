@@ -1,4 +1,5 @@
 import type { Settings, SettingsChange } from './settings';
+import type { VersionList } from './versions';
 
 /**
  * Functions and data the preload script exposes to the renderer as `window.azyron`.
@@ -28,5 +29,9 @@ export interface AzyronApi {
     get(): Promise<Settings>;
     /** Saves the given fields and returns the complete new settings. Rejects invalid values. */
     set(change: SettingsChange): Promise<Settings>;
+  };
+  /** Minecraft versions from Mojang's manifest (loaded by the main process). */
+  readonly gameVersions: {
+    list(includeSnapshots: boolean): Promise<VersionList>;
   };
 }

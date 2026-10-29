@@ -1,6 +1,8 @@
 import { join } from 'node:path';
 import { app, BrowserWindow, Menu, shell } from 'electron';
 import { themeBackgrounds } from '../shared/themes';
+import { GameContext, registerGameHandlers } from './game/ipc';
+import { createGamePaths } from './game/paths';
 import { getSettings, loadSettings, registerSettingsHandlers } from './settings';
 import { forwardMaximizedState, registerIpcHandlers } from './window-controls';
 
@@ -103,6 +105,8 @@ if (!app.requestSingleInstanceLock()) {
     registerSettingsHandlers((settings) => {
       mainWindow?.setBackgroundColor(themeBackgrounds[settings.theme]);
     });
+    // Game data lives next to settings.json: %APPDATA%\Azyron Client\game
+    registerGameHandlers(new GameContext(createGamePaths(join(app.getPath('userData'), 'game'))));
     mainWindow = createMainWindow();
   });
 

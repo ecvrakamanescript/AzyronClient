@@ -28,6 +28,9 @@ const api: AzyronApi = {
   settings: {
     get: () => ipcRenderer.invoke(IpcChannels.settingsGet),
     set: (change) => ipcRenderer.invoke(IpcChannels.settingsSet, change)
+  },
+  gameVersions: {
+    list: (includeSnapshots) => ipcRenderer.invoke(IpcChannels.versionsList, includeSnapshots)
   }
 };
 
