@@ -34,7 +34,7 @@ Azyron Client is licensed under the [GNU General Public License v3.0](LICENSE).
 
 **NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.**
 
-Azyron Client is an independent open-source project. The project author, not Mojang or Microsoft, is responsible for the launcher and the client. The launcher downloads all game files directly from Mojang's official servers; Minecraft files or modified versions of the game are not redistributed. The client is distributed as a mod only.
+Azyron Client is an independent open-source project. The project author, not Mojang or Microsoft, is responsible for the launcher and the client. The launcher downloads all game files directly from Mojang's official servers; Minecraft files or modified versions of the game are not redistributed. The client is loaded at runtime when the launcher starts the game, and it is only available through the Azyron Client launcher.
 
 ## Contact
 
