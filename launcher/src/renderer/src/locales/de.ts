@@ -42,7 +42,17 @@ const de: Translation = {
     renameTitle: 'Instanz umbenennen',
     deleteTitle: 'Instanz löschen',
     deleteText: '«{{name}}» löschen? Der Ordner mit Welten, Screenshots und Einstellungen wird endgültig gelöscht.',
-    actionFailed: 'Die Aktion ist fehlgeschlagen: {{message}}'
+    actionFailed: 'Die Aktion ist fehlgeschlagen: {{message}}',
+    install: 'Installieren',
+    stageMetadata: 'Wird vorbereitet …',
+    stageGame: 'Spieldateien werden geladen …',
+    stageJava: 'Java wird geladen …',
+    progress: '{{done}} von {{total}} MB',
+    cancelInstall: 'Installation abbrechen',
+    installed: 'Installiert',
+    failedDiskSpace: 'Nicht genug Speicherplatz.',
+    failedNetwork: 'Download fehlgeschlagen. Prüfe deine Internetverbindung.',
+    failedOther: 'Installation fehlgeschlagen.'
   },
   home: {
     characterPreview: 'Figurenvorschau',

@@ -75,6 +75,22 @@ export function AboutIcon(props: IconProps) {
 
 // Action icons, same line style as the navigation icons.
 
+export function XIcon(props: IconProps) {
+  return (
+    <NavIcon {...props}>
+      <path d="M6 6l12 12M18 6 6 18" />
+    </NavIcon>
+  );
+}
+
+export function CheckIcon(props: IconProps) {
+  return (
+    <NavIcon {...props}>
+      <path d="m5 12.5 4.5 4.5L19 7" />
+    </NavIcon>
+  );
+}
+
 export function PlusIcon(props: IconProps) {
   return (
     <NavIcon {...props}>

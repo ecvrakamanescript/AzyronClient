@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer, type IpcRendererEvent } from 'electron';
 import type { AzyronApi } from '../shared/api';
+import type { InstallStateEvent } from '../shared/install';
 import { IpcChannels } from '../shared/ipc';
 
 // ipcRenderer itself is never handed to the renderer; only these fixed functions are.
@@ -38,6 +39,18 @@ const api: AzyronApi = {
     rename: (id, name) => ipcRenderer.invoke(IpcChannels.instancesRename, id, name),
     remove: (id) => ipcRenderer.invoke(IpcChannels.instancesRemove, id),
     openFolder: (id) => ipcRenderer.invoke(IpcChannels.instancesOpenFolder, id)
+  },
+  install: {
+    getStates: (versionIds) => ipcRenderer.invoke(IpcChannels.installGetStates, versionIds),
+    start: (versionId) => ipcRenderer.invoke(IpcChannels.installStart, versionId),
+    cancel: (versionId) => ipcRenderer.invoke(IpcChannels.installCancel, versionId),
+    onStateChange: (listener) => {
+      const handler = (_event: IpcRendererEvent, data: InstallStateEvent) => listener(data);
+      ipcRenderer.on(IpcChannels.installStateChanged, handler);
+      return () => {
+        ipcRenderer.removeListener(IpcChannels.installStateChanged, handler);
+      };
+    }
   }
 };
 

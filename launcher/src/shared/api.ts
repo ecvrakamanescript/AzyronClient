@@ -1,3 +1,4 @@
+import type { InstallState, InstallStateEvent } from './install';
 import type { Instance } from './instances';
 import type { Settings, SettingsChange } from './settings';
 import type { VersionList } from './versions';
@@ -44,5 +45,14 @@ export interface AzyronApi {
     remove(id: string): Promise<void>;
     /** Opens the instance folder in Windows Explorer. */
     openFolder(id: string): Promise<void>;
+  };
+  /** Downloads of Minecraft versions; one installation is shared by all instances of a version. */
+  readonly install: {
+    getStates(versionIds: string[]): Promise<Record<string, InstallState>>;
+    /** Starts the installation in the background; the state arrives through onStateChange. */
+    start(versionId: string): Promise<void>;
+    cancel(versionId: string): Promise<void>;
+    /** Calls the listener on every change of an installation. Returns a function to unsubscribe. */
+    onStateChange(listener: (event: InstallStateEvent) => void): () => void;
   };
 }

@@ -954,6 +954,104 @@ button {
   gap: 4px;
 }
 
+.button--small {
+  height: 30px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.icon-button--small {
+  width: 26px;
+  height: 26px;
+}
+
+.icon-button--small svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Installation state on an instance card. */
+
+.install-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 30px;
+}
+
+.install-area--progress {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.install-area--failed {
+  justify-content: space-between;
+}
+
+.install-area__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.install-area__stage {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.install-area__percent {
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.install-area__bytes {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.install-area__done {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.install-area__done-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-accent-hover);
+}
+
+.install-area__error {
+  margin: 0;
+  color: var(--color-danger);
+  font-size: 13px;
+}
+
+/* The bar is scaled instead of resized, so the GPU moves it without a new layout. */
+.progress {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--color-surface-raised);
+}
+
+.progress__bar {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--color-accent);
+  transform-origin: left center;
+  transition: transform var(--duration-medium) var(--ease-out);
+}
+
 /* Shown when a list is empty. */
 .empty-state {
   display: flex;

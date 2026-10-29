@@ -16,5 +16,9 @@ export const IpcChannels = {
   instancesCreate: 'instances:create',
   instancesRename: 'instances:rename',
   instancesRemove: 'instances:remove',
-  instancesOpenFolder: 'instances:open-folder'
+  instancesOpenFolder: 'instances:open-folder',
+  installGetStates: 'install:get-states',
+  installStart: 'install:start',
+  installCancel: 'install:cancel',
+  installStateChanged: 'install:state-changed'
 } as const;

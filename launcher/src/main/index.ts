@@ -106,7 +106,10 @@ if (!app.requestSingleInstanceLock()) {
       mainWindow?.setBackgroundColor(themeBackgrounds[settings.theme]);
     });
     // Game data lives next to settings.json: %APPDATA%\Azyron Client\game
-    registerGameHandlers(new GameContext(createGamePaths(join(app.getPath('userData'), 'game'))));
+    const game = new GameContext(createGamePaths(join(app.getPath('userData'), 'game')));
+    registerGameHandlers(game);
+    // Running downloads stop cleanly; .part files are removed and the next start resumes.
+    app.on('before-quit', () => game.installs.cancelAll());
     mainWindow = createMainWindow();
   });
 

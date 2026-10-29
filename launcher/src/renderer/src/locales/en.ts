@@ -42,7 +42,17 @@ const en = {
     renameTitle: 'Rename instance',
     deleteTitle: 'Delete instance',
     deleteText: 'Delete “{{name}}”? Its folder with worlds, screenshots and settings will be deleted permanently.',
-    actionFailed: 'The action failed: {{message}}'
+    actionFailed: 'The action failed: {{message}}',
+    install: 'Install',
+    stageMetadata: 'Preparing …',
+    stageGame: 'Downloading game files …',
+    stageJava: 'Downloading Java …',
+    progress: '{{done}} of {{total}} MB',
+    cancelInstall: 'Cancel installation',
+    installed: 'Installed',
+    failedDiskSpace: 'Not enough disk space.',
+    failedNetwork: 'Download failed. Check your internet connection.',
+    failedOther: 'Installation failed.'
   },
   home: {
     characterPreview: 'Character preview',
