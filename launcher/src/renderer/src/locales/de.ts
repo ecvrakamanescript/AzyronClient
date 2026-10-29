@@ -16,6 +16,34 @@ const de: Translation = {
     restore: 'Wiederherstellen',
     close: 'Schliessen'
   },
+  common: {
+    cancel: 'Abbrechen',
+    save: 'Speichern',
+    create: 'Erstellen',
+    delete: 'Löschen',
+    retry: 'Erneut versuchen'
+  },
+  instances: {
+    newInstance: 'Neue Instanz',
+    emptyTitle: 'Noch keine Instanzen',
+    emptyHint: 'Erstelle eine Instanz, um eine Minecraft-Version zu wählen und loszulegen.',
+    version: 'Version {{version}}',
+    snapshot: 'Snapshot',
+    rename: 'Umbenennen',
+    openFolder: 'Ordner öffnen',
+    delete: 'Löschen',
+    createTitle: 'Neue Instanz',
+    nameLabel: 'Name',
+    versionLabel: 'Version',
+    showSnapshots: 'Snapshots anzeigen',
+    loadingVersions: 'Versionen werden geladen …',
+    versionsError: 'Die Versionsliste konnte nicht geladen werden. Prüfe deine Internetverbindung und versuche es erneut.',
+    offline: 'Offline: Es wird die zuletzt gespeicherte Versionsliste angezeigt.',
+    renameTitle: 'Instanz umbenennen',
+    deleteTitle: 'Instanz löschen',
+    deleteText: '«{{name}}» löschen? Der Ordner mit Welten, Screenshots und Einstellungen wird endgültig gelöscht.',
+    actionFailed: 'Die Aktion ist fehlgeschlagen: {{message}}'
+  },
   home: {
     characterPreview: 'Figurenvorschau',
     notSignedIn: 'Nicht angemeldet'

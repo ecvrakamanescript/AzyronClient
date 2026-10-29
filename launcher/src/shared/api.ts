@@ -1,3 +1,4 @@
+import type { Instance } from './instances';
 import type { Settings, SettingsChange } from './settings';
 import type { VersionList } from './versions';
 
@@ -33,5 +34,15 @@ export interface AzyronApi {
   /** Minecraft versions from Mojang's manifest (loaded by the main process). */
   readonly gameVersions: {
     list(includeSnapshots: boolean): Promise<VersionList>;
+  };
+  /** Instances (game setups with their own folder), stored by the main process. */
+  readonly instances: {
+    list(): Promise<Instance[]>;
+    create(name: string, versionId: string): Promise<Instance>;
+    rename(id: string, name: string): Promise<Instance>;
+    /** Deletes the instance together with its folder (worlds, settings, screenshots). */
+    remove(id: string): Promise<void>;
+    /** Opens the instance folder in Windows Explorer. */
+    openFolder(id: string): Promise<void>;
   };
 }

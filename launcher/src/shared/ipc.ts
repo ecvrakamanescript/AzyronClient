@@ -11,5 +11,10 @@ export const IpcChannels = {
   windowMaximizedChanged: 'window:maximized-changed',
   settingsGet: 'settings:get',
   settingsSet: 'settings:set',
-  versionsList: 'versions:list'
+  versionsList: 'versions:list',
+  instancesList: 'instances:list',
+  instancesCreate: 'instances:create',
+  instancesRename: 'instances:rename',
+  instancesRemove: 'instances:remove',
+  instancesOpenFolder: 'instances:open-folder'
 } as const;

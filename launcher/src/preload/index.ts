@@ -31,6 +31,13 @@ const api: AzyronApi = {
   },
   gameVersions: {
     list: (includeSnapshots) => ipcRenderer.invoke(IpcChannels.versionsList, includeSnapshots)
+  },
+  instances: {
+    list: () => ipcRenderer.invoke(IpcChannels.instancesList),
+    create: (name, versionId) => ipcRenderer.invoke(IpcChannels.instancesCreate, name, versionId),
+    rename: (id, name) => ipcRenderer.invoke(IpcChannels.instancesRename, id, name),
+    remove: (id) => ipcRenderer.invoke(IpcChannels.instancesRemove, id),
+    openFolder: (id) => ipcRenderer.invoke(IpcChannels.instancesOpenFolder, id)
   }
 };
 

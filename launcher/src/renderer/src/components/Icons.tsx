@@ -73,6 +73,42 @@ export function AboutIcon(props: IconProps) {
   );
 }
 
+// Action icons, same line style as the navigation icons.
+
+export function PlusIcon(props: IconProps) {
+  return (
+    <NavIcon {...props}>
+      <path d="M12 5v14M5 12h14" />
+    </NavIcon>
+  );
+}
+
+export function PencilIcon(props: IconProps) {
+  return (
+    <NavIcon {...props}>
+      <path d="M4 20h4L19 9l-4-4L4 16z" />
+      <path d="m13.5 6.5 4 4" />
+    </NavIcon>
+  );
+}
+
+export function FolderIcon(props: IconProps) {
+  return (
+    <NavIcon {...props}>
+      <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+    </NavIcon>
+  );
+}
+
+export function TrashIcon(props: IconProps) {
+  return (
+    <NavIcon {...props}>
+      <path d="M4 7h16M10 11v6M14 11v6" />
+      <path d="M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3" />
+    </NavIcon>
+  );
+}
+
 // Window control icons: 10x10 px with sharp 1px lines, like the Windows title bar.
 
 function WindowIcon({ children }: { children: ReactNode }) {

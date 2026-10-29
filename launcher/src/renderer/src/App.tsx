@@ -7,6 +7,7 @@ import { applyLanguage } from './i18n';
 import { pages, type PageId } from './navigation';
 import AboutPage from './pages/AboutPage';
 import HomePage from './pages/HomePage';
+import InstancesPage from './pages/InstancesPage';
 import PlaceholderPage from './pages/PlaceholderPage';
 import SettingsPage from './pages/SettingsPage';
 import { applyTheme } from './theme';
@@ -43,6 +44,8 @@ export default function App({ initialSettings }: AppProps) {
     switch (current.id) {
       case 'home':
         return <HomePage title={title} theme={settings.theme} />;
+      case 'instances':
+        return <InstancesPage title={title} />;
       case 'settings':
         return <SettingsPage title={title} settings={settings} onChange={changeSettings} />;
       case 'about':

@@ -16,6 +16,34 @@ const en = {
     restore: 'Restore',
     close: 'Close'
   },
+  common: {
+    cancel: 'Cancel',
+    save: 'Save',
+    create: 'Create',
+    delete: 'Delete',
+    retry: 'Try again'
+  },
+  instances: {
+    newInstance: 'New instance',
+    emptyTitle: 'No instances yet',
+    emptyHint: 'Create an instance to choose a Minecraft version and get started.',
+    version: 'Version {{version}}',
+    snapshot: 'Snapshot',
+    rename: 'Rename',
+    openFolder: 'Open folder',
+    delete: 'Delete',
+    createTitle: 'New instance',
+    nameLabel: 'Name',
+    versionLabel: 'Version',
+    showSnapshots: 'Show snapshots',
+    loadingVersions: 'Loading versions …',
+    versionsError: 'The version list could not be loaded. Check your internet connection and try again.',
+    offline: 'Offline: showing the last saved version list.',
+    renameTitle: 'Rename instance',
+    deleteTitle: 'Delete instance',
+    deleteText: 'Delete “{{name}}”? Its folder with worlds, screenshots and settings will be deleted permanently.',
+    actionFailed: 'The action failed: {{message}}'
+  },
   home: {
     characterPreview: 'Character preview',
     notSignedIn: 'Not signed in'

@@ -638,6 +638,350 @@ button {
   text-align: center;
 }
 
+/* Page header: title on the left, page actions on the right. */
+
+.page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.page__header .page__title {
+  margin: 0;
+}
+
+/* Buttons. */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) ease,
+    border-color var(--duration-fast) ease,
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.button:hover:not(:disabled) {
+  border-color: var(--color-text-muted);
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button--primary {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+}
+
+.button--primary:hover:not(:disabled) {
+  border-color: var(--color-accent-hover);
+  background: var(--color-accent-hover);
+}
+
+.button--danger {
+  border-color: var(--color-danger);
+  background: var(--color-danger);
+  color: var(--color-danger-contrast);
+}
+
+.button--danger:hover:not(:disabled) {
+  border-color: var(--color-danger);
+  filter: brightness(1.1);
+}
+
+.button__icon {
+  width: 18px;
+  height: 18px;
+  margin-left: -4px;
+}
+
+/* Small square button with an icon only (the label is in title and aria-label). */
+.icon-button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) ease,
+    color var(--duration-fast) ease;
+}
+
+.icon-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.icon-button:hover {
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+}
+
+.icon-button--danger:hover {
+  color: var(--color-danger);
+}
+
+/* A button that looks like a link inside a text. */
+.link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-accent-hover);
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Form fields. */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.field__label {
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.input,
+.select {
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: inherit;
+  transition: border-color var(--duration-fast) ease;
+}
+
+.input {
+  user-select: text;
+}
+
+.input:focus,
+.select:focus {
+  border-color: var(--color-accent);
+  outline: none;
+}
+
+.select:disabled {
+  opacity: 0.6;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.checkbox input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--color-accent);
+}
+
+.form-hint,
+.form-error {
+  margin: 12px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.form-hint {
+  color: var(--color-text-muted);
+}
+
+.form-error {
+  color: var(--color-danger);
+}
+
+/* Modal dialog (native <dialog>). */
+
+.dialog {
+  width: min(440px, calc(100vw - 48px));
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-raised);
+  animation: dialog-in var(--duration-medium) var(--ease-out);
+}
+
+.dialog::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+  animation: backdrop-in var(--duration-medium) ease;
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.dialog__form {
+  padding: 24px;
+}
+
+.dialog__title {
+  margin: 0 0 20px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.dialog__text {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+/* Instances page. */
+
+.instance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.instance-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
+  background: var(--color-surface);
+  transition:
+    border-color var(--duration-fast) ease,
+    box-shadow var(--duration-medium) var(--ease-out),
+    transform var(--duration-medium) var(--ease-out);
+}
+
+.instance-card:hover {
+  border-color: var(--color-text-muted);
+  box-shadow: var(--shadow-raised);
+  transform: translateY(-2px);
+}
+
+.instance-card__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.instance-card__icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-hover);
+}
+
+.instance-card__text {
+  min-width: 0;
+}
+
+.instance-card__name {
+  margin: 0;
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.instance-card__version {
+  margin: 2px 0 0;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.instance-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+/* Shown when a list is empty. */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 420px;
+  margin: 64px auto 0;
+  text-align: center;
+}
+
+.empty-state__icon {
+  width: 40px;
+  height: 40px;
+  color: var(--color-accent-hover);
+}
+
+.empty-state__title {
+  margin: 16px 0 6px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.empty-state__hint {
+  margin: 0 0 20px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
 /*
  * Windows setting "Show animations" switched off: no movement at all.
  * The background glows stay visible but still; state changes apply instantly.
