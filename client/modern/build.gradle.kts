@@ -17,6 +17,7 @@ val fabricApiModules = mapOf(
     "fabric-api-base" to property("fabric_api_base_version"),
     keyApi to property("fabric_key_api_version"),
     "fabric-lifecycle-events-v1" to property("fabric_lifecycle_events_version"),
+    "fabric-rendering-v1" to property("fabric_rendering_version"),
     "fabric-resource-loader-v1" to property("fabric_resource_loader_version"),
 )
 
@@ -36,6 +37,24 @@ dependencies {
     implementation(project(":core"))
     // Nest the core JAR inside the client JAR, so the launcher only needs one file
     include(project(":core"))
+}
+
+// The UI font definitions (one per text size) are generated from the core, so the list of sizes
+// exists only in FontCatalog
+val fontGenerator = configurations.create("fontGenerator")
+dependencies {
+    fontGenerator(project(":core"))
+}
+val generatedFonts = layout.buildDirectory.dir("generated/uiFonts")
+val generateUiFonts = tasks.register<JavaExec>("generateUiFonts") {
+    description = "Writes the Minecraft font definitions for the client UI."
+    classpath = fontGenerator
+    mainClass = "io.github.ecvrakamanescript.azyron.core.ui.FontCatalog"
+    args(generatedFonts.get().dir("assets/azyronclient/font").asFile.absolutePath)
+    outputs.dir(generatedFonts)
+}
+sourceSets.main {
+    resources.srcDir(generateUiFonts)
 }
 
 tasks.processResources {

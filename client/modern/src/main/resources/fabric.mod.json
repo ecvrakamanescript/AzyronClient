@@ -21,6 +21,7 @@
     "fabric-api-base": "*",
     "${fabric_key_api}": "*",
     "fabric-lifecycle-events-v1": "*",
+    "fabric-rendering-v1": "*",
     "fabric-resource-loader-v1": "*"
   }
 }

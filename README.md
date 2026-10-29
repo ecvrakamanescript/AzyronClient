@@ -36,6 +36,8 @@ Requirements and setup instructions will follow in [`docs/`](docs/) once Phase 1
 
 Azyron Client is licensed under the [GNU General Public License v3.0](LICENSE).
 
+The client includes the [Inter](https://github.com/rsms/inter) font (version 4.1, unmodified), which is licensed separately under the [SIL Open Font License 1.1](client/modern/src/main/resources/licenses/Inter-OFL.txt).
+
 ## Disclaimer
 
 **NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.**
