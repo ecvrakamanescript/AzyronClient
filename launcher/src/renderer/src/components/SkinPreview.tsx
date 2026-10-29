@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { SkinViewer } from 'skinview3d';
 import type { ThemeId } from '../../../shared/themes';
 import { createIdleAnimation } from '../skin/idleAnimation';
@@ -22,37 +22,49 @@ interface SkinPreviewProps {
  * The viewer is released when the component disappears (e.g. on another page),
  * so the 3D view only costs resources while it is visible.
  */
+const surfaceColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-surface').trim();
+
 export default function SkinPreview({ theme, label }: SkinPreviewProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const viewerRef = useRef<SkinViewer | null>(null);
+  // Theme the placeholder was last drawn for, so it is not drawn twice when the page opens.
+  const drawnThemeRef = useRef<ThemeId | null>(null);
 
-  useEffect(() => {
+  // Layout effect: the first frame is drawn before the browser shows the page,
+  // so the figure never pops in on an empty card.
+  useLayoutEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) {
       return;
     }
+    // skinview3d draws every screen frame (60 per second) unless paused; the loop below draws every second one.
     const viewer = new SkinViewer({
       canvas,
       width: WIDTH,
       height: HEIGHT,
       pixelRatio: 'match-device',
       enableControls: false,
+      renderPaused: true,
       fov: 40,
-      zoom: 0.82
+      zoom: 0.82,
+      background: surfaceColor(),
+      skin: createPlaceholderSkin(readPlaceholderPalette()),
+      model: 'default'
     });
-    // Turned and seen slightly from above, so the figure looks three-dimensional.
-    // The positive angle brings the waving (right) arm towards the viewer.
-    viewer.playerObject.rotation.y = 0.55;
-    viewer.playerWrapper.rotation.x = 0.12;
+    drawnThemeRef.current = theme;
     // Windows setting "Show animations" switched off: the figure stands still.
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       viewer.animation = createIdleAnimation();
     }
+    // Turned and seen slightly from above, so the figure looks three-dimensional; the positive
+    // angle brings the waving (right) arm towards the viewer. Set on the wrapper, because
+    // skinview3d resets the rotation of playerObject whenever an animation is set.
+    viewer.playerWrapper.rotation.set(0.12, 0.55, 0);
+    viewer.animation?.update(viewer.playerObject, 0);
+    viewer.render();
     viewerRef.current = viewer;
 
-    // skinview3d draws every screen frame (60 per second); our own loop draws every second one.
     // requestAnimationFrame stops by itself while the window is minimized or hidden.
-    viewer.renderPaused = true;
     let frameId = 0;
     let lastDraw = performance.now();
     const loop = (now: number) => {
@@ -74,13 +86,14 @@ export default function SkinPreview({ theme, label }: SkinPreviewProps) {
     };
   }, []);
 
-  // Runs after the viewer exists and again on every theme change.
-  useEffect(() => {
+  // A theme change while the figure is visible: redraw placeholder and background.
+  useLayoutEffect(() => {
     const viewer = viewerRef.current;
-    if (!viewer) {
+    if (!viewer || drawnThemeRef.current === theme) {
       return;
     }
-    viewer.background = getComputedStyle(document.documentElement).getPropertyValue('--color-surface').trim();
+    drawnThemeRef.current = theme;
+    viewer.background = surfaceColor();
     viewer.loadSkin(createPlaceholderSkin(readPlaceholderPalette()), { model: 'default' });
   }, [theme]);
 

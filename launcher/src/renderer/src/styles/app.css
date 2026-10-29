@@ -106,12 +106,25 @@ button {
   }
 }
 
+/*
+ * Every page change mounts a new content area (key in App.tsx), which fades in and moves up a
+ * few pixels. The scroll container itself moves, not the page inside it: a moving page would
+ * stick out at the bottom for a moment, show a scrollbar and shift everything sideways.
+ */
 .app__content {
   position: relative;
   z-index: 1;
   flex: 1;
   min-width: 0;
   overflow-y: auto;
+  animation: page-in var(--duration-medium) var(--ease-out);
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
 }
 
 /* Title bar (replaces the Windows title bar). */
@@ -284,15 +297,6 @@ button {
 
 .page {
   padding: 32px 40px;
-  animation: page-in var(--duration-medium) var(--ease-out);
-}
-
-/* A new page fades in and moves up a few pixels. */
-@keyframes page-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
 }
 
 .page__title {
