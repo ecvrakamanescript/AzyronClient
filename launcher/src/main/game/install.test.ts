@@ -58,7 +58,22 @@ beforeAll(async () => {
     arguments: { game: [], jvm: [] }
   };
   versionEntry = { id: '26.3', type: 'release', releaseTime: '2026-09-15T00:00:00+00:00', ...remote('/26.3.json', JSON.stringify(version)) };
+
+  // A fake Java runtime with two files.
+  const runtimeManifest = remote(
+    '/java/manifest.json',
+    JSON.stringify({
+      files: {
+        bin: { type: 'directory' },
+        'bin/java.exe': { type: 'file', downloads: { raw: remote('/java/java.exe', 'java console') } },
+        'bin/javaw.exe': { type: 'file', downloads: { raw: remote('/java/javaw.exe', 'java window') } }
+      }
+    })
+  );
+  remote('/java/all.json', JSON.stringify({ 'windows-x64': { 'java-runtime-epsilon': [{ manifest: runtimeManifest, version: { name: '25.0.1' } }] } }));
 });
+
+let probeResult: Promise<string> = Promise.resolve('25.0.1');
 
 afterAll(() => new Promise<void>((resolve) => server.close(() => resolve())));
 
@@ -72,13 +87,16 @@ beforeEach(async () => {
   events = [];
   missing.clear();
   delayMs = 0;
+  probeResult = Promise.resolve('25.0.1');
   manager = new InstallManager(
     {
       paths,
       env: { arch: 'x64', osVersion: '10.0', features: {} },
       findVersion: async () => versionEntry,
-      // Assets come from "resources.download.minecraft.net"; the test redirects them to the local server.
-      downloadOptions: { isAllowedUrl: () => true, retryDelayMs: 1, attempts: 1 }
+      downloadOptions: { isAllowedUrl: () => true, retryDelayMs: 1, attempts: 1 },
+      javaIndexUrl: `${base}/java/all.json`,
+      // The fake runtime cannot run; the probe only reports what the test wants.
+      probeJava: () => probeResult
     },
     (event) => events.push(event)
   );
@@ -117,7 +135,23 @@ describe('InstallManager', () => {
     expect(await manager.getState('26.3')).toEqual({ status: 'installed' });
     await access(join(paths.versions, '26.3', '26.3.jar'));
     await access(join(paths.libraries, 'com', 'example', 'lib', '1.0', 'lib-1.0.jar'));
+    await access(join(paths.runtimes, 'java-runtime-epsilon', 'bin', 'javaw.exe'));
     expect(events[0]?.state.status).toBe('installing');
+    expect(events.some((event) => event.state.status === 'installing' && event.state.progress.stage === 'java')).toBe(true);
+  });
+
+  it('fails if the downloaded Java does not start', async () => {
+    probeResult = Promise.reject(new Error('Java does not start'));
+    manager.start('26.3');
+    expect((await finished()).state).toMatchObject({ status: 'failed', reason: 'other', detail: 'Java does not start' });
+    expect(await manager.isInstalled('26.3')).toBe(false);
+  });
+
+  it('is no longer installed when the Java runtime is missing', async () => {
+    manager.start('26.3');
+    await finished();
+    await rm(join(paths.runtimes, 'java-runtime-epsilon'), { recursive: true });
+    expect(await manager.isInstalled('26.3')).toBe(false);
   });
 
   it('reports a missing file as a network failure', async () => {

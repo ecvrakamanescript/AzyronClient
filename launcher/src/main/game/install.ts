@@ -2,6 +2,15 @@ import { mkdir, readFile, stat, statfs, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { InstallFailure, InstallProgress, InstallState, InstallStateEvent } from '../../shared/install';
 import { DownloadError, downloadAll, downloadFile, type DownloadOptions, type DownloadTask } from './download';
+import {
+  createRuntimeDirectories,
+  isRuntimeInstalled,
+  javaExecutable,
+  planRuntime,
+  probeJava,
+  writeRuntimeMarker,
+  type RuntimePlan
+} from './java';
 import type { ManifestEntry } from './manifest';
 import type { GamePaths } from './paths';
 import type { RuleEnvironment } from './rules';
@@ -34,8 +43,10 @@ export interface InstallDependencies {
   env: RuleEnvironment;
   /** Manifest entry of a supported version; throws for anything else. */
   findVersion: (versionId: string) => Promise<ManifestEntry>;
-  /** Only for tests: other download servers. */
+  /** Only for tests: other download servers, another Java index and a fake Java probe. */
   downloadOptions?: DownloadOptions;
+  javaIndexUrl?: string;
+  probeJava?: (executable: string) => Promise<string>;
 }
 
 function markerPath(paths: GamePaths, versionId: string): string {
@@ -88,11 +99,15 @@ export class InstallManager {
     return (await this.isInstalled(versionId)) ? { status: 'installed' } : { status: 'not-installed' };
   }
 
-  /** True once an installation of this version has completed. */
+  /** True once an installation of this version (including its Java runtime) has completed. */
   async isInstalled(versionId: string): Promise<boolean> {
     try {
-      const marker = await readJson(markerPath(this.deps.paths, versionId));
-      return typeof marker === 'object' && marker !== null && (marker as { versionId?: unknown }).versionId === versionId;
+      const marker = (await readJson(markerPath(this.deps.paths, versionId))) as { versionId?: unknown; javaComponent?: unknown };
+      return (
+        marker.versionId === versionId &&
+        typeof marker.javaComponent === 'string' &&
+        (await isRuntimeInstalled(this.deps.paths, marker.javaComponent))
+      );
     } catch {
       return false;
     }
@@ -155,10 +170,25 @@ export class InstallManager {
       throw new Error(`Asset index ${version.assetIndex.id} has an unexpected format`);
     }
 
-    // 2. Game files.
+    // The Java runtime is shared by all versions that need it; an installed one is skipped.
+    const component = version.javaVersion.component;
+    let runtime: RuntimePlan | null = null;
+    if (!(await isRuntimeInstalled(paths, component))) {
+      runtime = await planRuntime(paths, component, env.arch, { ...options, indexUrl: this.deps.javaIndexUrl });
+    }
+
+    // 2. Game files, after checking that game and Java fit on the disk.
     const tasks = gameFileTasks(paths, version, assets, env);
-    await this.checkDiskSpace(await missingBytes(tasks));
+    await this.checkDiskSpace((await missingBytes(tasks)) + (runtime ? await missingBytes(runtime.tasks) : 0));
     await this.download(versionId, 'game', tasks, options, progress);
+
+    // 3. Java runtime; a short probe proves that it starts.
+    if (runtime) {
+      await createRuntimeDirectories(runtime);
+      await this.download(versionId, 'java', runtime.tasks, options, progress);
+      await (this.deps.probeJava ?? probeJava)(javaExecutable(paths, component, true));
+      await writeRuntimeMarker(paths, component, runtime.version);
+    }
 
     await this.writeMarker(version);
   }
@@ -197,7 +227,7 @@ export class InstallManager {
   }
 
   private async writeMarker(version: VersionJson): Promise<void> {
-    const marker = { versionId: version.id, completedAt: new Date().toISOString() };
+    const marker = { versionId: version.id, javaComponent: version.javaVersion.component, completedAt: new Date().toISOString() };
     await writeFile(markerPath(this.deps.paths, version.id), `${JSON.stringify(marker, null, 2)}\n`, 'utf8');
   }
 }
